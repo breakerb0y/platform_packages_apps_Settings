@@ -17,14 +17,14 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- BlissRoms Version -->
-    <string name="bliss_version">Bliss version</string>
+    <string name="bliss_version">GP Droid version</string>
     <string name="bliss_version_default">Unknown</string>
-    <string name="keywords_bliss_version">Bliss version, bliss</string>
+    <string name="keywords_bliss_version">GP Droid version, gp</string>
     <string name="bliss_build_date">Build date</string>
     <string name="bliss_build_default">Unknown</string>
     <string name="bliss_build_type">Build status</string>
-    <string name="bliss_device">Bliss device</string>
-    <string name="bliss_codename">Bliss Codename</string>
+    <string name="bliss_device">device</string>
+    <string name="bliss_codename">Codename</string>
 
     <!-- Bliss maintainer -->
     <string name="maintainer">Maintainer</string>
