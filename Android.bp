@@ -58,21 +58,16 @@ android_library {
     srcs: [
         "src/**/*.java",
         "src/**/*.kt",
-        "Blissify/src/**/*.java",
-        "Blissify/src/**/*.kt",
     ],
     exclude_srcs: [
         "src/com/android/settings/biometrics/fingerprint2/lib/**/*.kt",
     ],
     use_resource_processor: true,
 
-    aaptflags: ["--extra-packages org.blissroms.blissify"],
-
     resource_dirs: [
         "res",
         "res-export", // for external usage
         "res-product",
-        "Blissify/res",
     ],
     static_libs: [
         // External dependencies
