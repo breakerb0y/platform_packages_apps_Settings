@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.settings.display;
+package com.android.settings.development;
 
 import static android.view.CrossWindowBlurListeners.CROSS_WINDOW_BLUR_SUPPORTED;
 
@@ -26,12 +26,12 @@ import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
 
 import com.android.settings.core.PreferenceControllerMixin;
-import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.development.DeveloperOptionsPreferenceController;
 
 /**
  * Controller that toggles window blurs on devices that support it.
  */
-public final class EnableBlursPreferenceController extends AbstractPreferenceController
+public final class EnableBlursPreferenceController extends DeveloperOptionsPreferenceController
         implements Preference.OnPreferenceChangeListener, PreferenceControllerMixin {
 
     private static final String ENABLE_BLURS_ON_WINDOWS = "enable_blurs_on_windows";
@@ -69,6 +69,14 @@ public final class EnableBlursPreferenceController extends AbstractPreferenceCon
     public void updateState(Preference preference) {
         boolean isEnabled = Settings.Global.getInt(mContext.getContentResolver(),
                     Settings.Global.DISABLE_WINDOW_BLURS, 0) == 0;
-        ((TwoStatePreference) preference).setChecked(isEnabled);
+        ((TwoStatePreference) mPreference).setChecked(isEnabled);
+    }
+
+    @Override
+    protected void onDeveloperOptionsSwitchDisabled() {
+        super.onDeveloperOptionsSwitchDisabled();
+        Settings.Global.putInt(mContext.getContentResolver(),
+                Settings.Global.DISABLE_WINDOW_BLURS, 0);
+        updateState(null);
     }
 }

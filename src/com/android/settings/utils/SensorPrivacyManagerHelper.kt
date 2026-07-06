@@ -50,7 +50,7 @@ open class SensorPrivacyManagerHelper(context: Context) :
     }
 
     init {
-        sensorPrivacyManager = (context.applicationContext ?: context).getSystemService(SensorPrivacyManager::class.java)!!
+        sensorPrivacyManager = context.getSystemService(SensorPrivacyManager::class.java)!!
 
         sensorPrivacyManager.addSensorPrivacyListener(context.mainExecutor, this)
     }

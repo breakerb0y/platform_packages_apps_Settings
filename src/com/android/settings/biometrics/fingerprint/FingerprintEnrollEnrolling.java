@@ -104,7 +104,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
     static final String ICON_TOUCH_DIALOG = "fps_icon_touch_dialog";
     static final String KEY_STATE_CANCELED = "is_canceled";
     static final String KEY_STATE_PREVIOUS_ROTATION = "previous_rotation";
-    static final String KEY_STATE_OVERLAY_SHOWN = "overlay_shown";
 
     private static final int PROGRESS_BAR_MAX = 10000;
 
@@ -194,7 +193,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
     private boolean mHaveShownSfpsLeftEdgeLottie;
     private boolean mHaveShownSfpsRightEdgeLottie;
     private boolean mShouldShowLottie;
-    private boolean mOverlayShown;
 
     private Animator mHelpAnimation;
 
@@ -373,20 +371,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Ignore if it's not udfps.
-        if (!mCanAssumeUdfps) {
-            return;
-        }
-        View decorView = getWindow().getDecorView();
-        // Hide the navigation bar and make the layout stable.
-        // so that the content doesn't resize as the navigation bar hides and shows.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-        decorView.setSystemUiVisibility(uiOptions);
-    }
-
     private void setHelpAnimation() {
         final RelativeLayout progressLottieLayout = findViewById(R.id.progress_lottie);
         mHelpAnimation = mSfpsEnrollmentFeature.getHelpAnimator(progressLottieLayout);
@@ -413,14 +397,12 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_STATE_CANCELED, mIsCanceled);
-        outState.putBoolean(KEY_STATE_OVERLAY_SHOWN, mOverlayShown);
         outState.putInt(KEY_STATE_PREVIOUS_ROTATION, mPreviousRotation);
     }
 
     private void restoreSavedState(Bundle savedInstanceState) {
         mRestoring = true;
         mIsCanceled = savedInstanceState.getBoolean(KEY_STATE_CANCELED, false);
-        mOverlayShown = savedInstanceState.getBoolean(KEY_STATE_OVERLAY_SHOWN, false);
         mPreviousRotation = savedInstanceState.getInt(KEY_STATE_PREVIOUS_ROTATION,
                 getDisplay().getRotation());
     }
@@ -433,9 +415,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         updateTitleAndDescription(true);
         if (mRestoring) {
             startIconAnimation();
-        }
-        if (mOverlayShown) {
-            onUdfpsOverlayShown();
         }
     }
 
@@ -482,7 +461,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         // showErrorDialog() will cause onWindowFocusChanged(false), set mIsCanceled to false
         // before showErrorDialog() to prevent that another error dialog is triggered again.
         mIsCanceled = true;
-        mOverlayShown = false;
         FingerprintErrorDialog.showErrorDialog(this, errorMsgId,
                 this instanceof SetupFingerprintEnrollEnrolling);
         cancelEnrollment();
@@ -496,7 +474,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
     @Override
     protected void onStop() {
         if (!isChangingConfigurations()) {
-            mOverlayShown = false;
             if (!WizardManagerHelper.isAnySetupWizard(getIntent())
                     && !BiometricUtils.isAnyMultiBiometricFlow(this)
                     && !mFromSettingsSummary) {
@@ -962,7 +939,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
     public void onUdfpsOverlayShown() {
         if (mCanAssumeUdfps) {
             findViewById(R.id.udfps_animation_view).setVisibility(View.VISIBLE);
-            mOverlayShown = true;
         }
     }
 
@@ -1137,7 +1113,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mOverlayShown = false;
                     stopIconAnimation();
 
                     if (mProgressBar.getProgress() >= PROGRESS_BAR_MAX) {

@@ -17,17 +17,12 @@
 package com.android.settings.gestures;
 
 import android.app.settings.SettingsEnums;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.WindowManager;
-
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
@@ -36,16 +31,11 @@ import com.android.settings.widget.LabeledSeekBarPreference;
 import com.android.settings.widget.SeekBarPreference;
 import com.android.settingslib.search.SearchIndexable;
 
-import lineageos.providers.LineageSettings;
-
-import static org.lineageos.internal.util.DeviceKeysConstants.*;
-
 /**
  * A fragment to include all the settings related to Gesture Navigation mode.
  */
 @SearchIndexable(forTarget = SearchIndexable.ALL & ~SearchIndexable.ARC)
-public class GestureNavigationSettingsFragment extends DashboardFragment implements
-        Preference.OnPreferenceChangeListener {
+public class GestureNavigationSettingsFragment extends DashboardFragment {
 
     public static final String TAG = "GestureNavigationSettingsFragment";
 
@@ -55,26 +45,11 @@ public class GestureNavigationSettingsFragment extends DashboardFragment impleme
     private static final String LEFT_EDGE_SEEKBAR_KEY = "gesture_left_back_sensitivity";
     private static final String RIGHT_EDGE_SEEKBAR_KEY = "gesture_right_back_sensitivity";
 
-    private static final String GESTURE_NAVBAR_LENGTH_KEY = "gesture_navbar_length_preference";
-    private static final String GESTURE_BACK_HEIGHT_KEY = "gesture_back_height";
-    private static final String GESTURE_NAVBAR_HEIGHT_MODE_KEY = "gesture_navbar_height_preference";
-    private static final String KEY_CORNER_LONG_SWIPE = "navigation_bar_corner_long_swipe";
-    private static final String KEY_EDGE_LONG_SWIPE = "navigation_bar_edge_long_swipe";
-
     private WindowManager mWindowManager;
     private BackGestureIndicatorView mIndicatorView;
 
     private float[] mBackGestureInsetScales;
     private float mDefaultBackGestureInset;
-
-    private LabeledSeekBarPreference mGestureNavbarLengthPreference;
-
-    private ListPreference mCornerLongSwipeAction;
-    private ListPreference mEdgeLongSwipeAction;
-
-    private float[] mBackGestureHeightScales = { 0f, 1f, 2f, 3f };
-    private int mCurrentRightWidth;
-    private int mCurrentLefttWidth;
 
     public GestureNavigationSettingsFragment() {
         super();
@@ -92,9 +67,7 @@ public class GestureNavigationSettingsFragment extends DashboardFragment impleme
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
 
-        final Resources res = getResources();
-        final ContentResolver resolver = getContext().getContentResolver();
-
+        final Resources res = getActivity().getResources();
         mDefaultBackGestureInset = res.getDimensionPixelSize(
                 com.android.internal.R.dimen.config_backGestureInset);
         mBackGestureInsetScales = getFloatArray(res.obtainTypedArray(
@@ -102,24 +75,6 @@ public class GestureNavigationSettingsFragment extends DashboardFragment impleme
 
         initSeekBarPreference(LEFT_EDGE_SEEKBAR_KEY);
         initSeekBarPreference(RIGHT_EDGE_SEEKBAR_KEY);
-        initSeekBarPreference(GESTURE_BACK_HEIGHT_KEY);
-
-        initGestureNavbarLengthPreference();
-
-        initGestureNavbarHeightPreference();
-
-        Action cornerLongSwipeAction = Action.fromSettings(resolver,
-                LineageSettings.System.KEY_CORNER_LONG_SWIPE_ACTION,
-                Action.SEARCH);
-        Action edgeLongSwipeAction = Action.fromSettings(resolver,
-                LineageSettings.System.KEY_EDGE_LONG_SWIPE_ACTION,
-                Action.NOTHING);
-
-        // Corner swipe up gesture
-        mCornerLongSwipeAction = initList(KEY_CORNER_LONG_SWIPE, cornerLongSwipeAction);
-
-        // Edge long swipe gesture
-        mEdgeLongSwipeAction = initList(KEY_EDGE_LONG_SWIPE, edgeLongSwipeAction);
     }
 
     @Override
@@ -154,44 +109,8 @@ public class GestureNavigationSettingsFragment extends DashboardFragment impleme
     }
 
     @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        ContentResolver resolver = getActivity().getContentResolver();
-
-        if (preference == mCornerLongSwipeAction) {
-            handleListChange((ListPreference) preference, newValue,
-                    LineageSettings.System.KEY_CORNER_LONG_SWIPE_ACTION);
-            return true;
-        } else if (preference == mEdgeLongSwipeAction) {
-            handleListChange((ListPreference) preference, newValue,
-                    LineageSettings.System.KEY_EDGE_LONG_SWIPE_ACTION);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public int getMetricsCategory() {
         return SettingsEnums.SETTINGS_GESTURE_NAV_BACK_SENSITIVITY_DLG;
-    }
-
-    private ListPreference initList(String key, Action value) {
-        return initList(key, value.ordinal());
-    }
-
-    private ListPreference initList(String key, int value) {
-        ListPreference list = (ListPreference) getPreferenceScreen().findPreference(key);
-        if (list == null) return null;
-        list.setValue(Integer.toString(value));
-        list.setSummary(list.getEntry());
-        list.setOnPreferenceChangeListener(this);
-        return list;
-    }
-
-    private void handleListChange(ListPreference pref, Object newValue, String setting) {
-        String value = (String) newValue;
-        int index = pref.findIndexOfValue(value);
-        pref.setSummary(pref.getEntries()[index]);
-        LineageSettings.System.putIntForUser(getContentResolver(), setting, Integer.valueOf(value), UserHandle.USER_CURRENT);
     }
 
     private void initSeekBarPreference(final String key) {
@@ -199,42 +118,11 @@ public class GestureNavigationSettingsFragment extends DashboardFragment impleme
         pref.setContinuousUpdates(true);
         pref.setHapticFeedbackMode(SeekBarPreference.HAPTIC_FEEDBACK_MODE_ON_TICKS);
 
-        String settingsKey;
-        float initScale = 0;
-
-        switch(key) {
-            case LEFT_EDGE_SEEKBAR_KEY:
-                settingsKey = Settings.Secure.BACK_GESTURE_INSET_SCALE_LEFT;
-                break;
-            case RIGHT_EDGE_SEEKBAR_KEY:
-                settingsKey = Settings.Secure.BACK_GESTURE_INSET_SCALE_RIGHT;
-                break;
-            case GESTURE_BACK_HEIGHT_KEY:
-                settingsKey = Settings.System.BACK_GESTURE_HEIGHT;
-                break;
-            default:
-                settingsKey = "";
-                break;
-        }
-
-        if (settingsKey != "") {
-            initScale = Settings.Secure.getFloat(
-                  getContext().getContentResolver(), settingsKey, 1.0f);
-        }
-
-        // needed if we just change the height
-        float currentWidthScale = Settings.Secure.getFloat(
-                getContext().getContentResolver(), Settings.Secure.BACK_GESTURE_INSET_SCALE_RIGHT, 1.0f);
-        mCurrentRightWidth = (int) (mDefaultBackGestureInset * currentWidthScale);
-        currentWidthScale = Settings.Secure.getFloat(
-                getContext().getContentResolver(), Settings.Secure.BACK_GESTURE_INSET_SCALE_LEFT, 1.0f);
-        mCurrentLefttWidth = (int) (mDefaultBackGestureInset * currentWidthScale);
-
-        if (key == GESTURE_BACK_HEIGHT_KEY) {
-            mBackGestureInsetScales = mBackGestureHeightScales;
-            initScale = Settings.System.getInt(
-                    getContext().getContentResolver(), settingsKey, 0);
-        }
+        final String settingsKey = key == LEFT_EDGE_SEEKBAR_KEY
+                ? Settings.Secure.BACK_GESTURE_INSET_SCALE_LEFT
+                : Settings.Secure.BACK_GESTURE_INSET_SCALE_RIGHT;
+        final float initScale = Settings.Secure.getFloat(
+                getContext().getContentResolver(), settingsKey, 1.0f);
 
         // Find the closest value to initScale
         float minDistance = Float.MAX_VALUE;
@@ -249,63 +137,17 @@ public class GestureNavigationSettingsFragment extends DashboardFragment impleme
         pref.setProgress(minDistanceIndex);
 
         pref.setOnPreferenceChangeListener((p, v) -> {
-            if (key != GESTURE_BACK_HEIGHT_KEY) {
-                final int width = (int) (mDefaultBackGestureInset * mBackGestureInsetScales[(int) v]);
-                mIndicatorView.setIndicatorWidth(width, key == LEFT_EDGE_SEEKBAR_KEY);
-                if (key == LEFT_EDGE_SEEKBAR_KEY) {
-                    mCurrentLefttWidth = width;
-                } else {
-                    mCurrentRightWidth = width;
-                }
-            } else {
-                final int heightScale = (int) (mBackGestureInsetScales[(int) v]);
-                mIndicatorView.setIndicatorHeightScale(heightScale);
-                // dont use updateViewLayout else it will animate
-                mWindowManager.removeView(mIndicatorView);
-                mWindowManager.addView(mIndicatorView, mIndicatorView.getLayoutParams(
-                        getActivity().getWindow().getAttributes()));
-                // peek the indicators
-                mIndicatorView.setIndicatorWidth(mCurrentRightWidth, false);
-                mIndicatorView.setIndicatorWidth(mCurrentLefttWidth, true);
-            }
+            final int width = (int) (mDefaultBackGestureInset * mBackGestureInsetScales[(int) v]);
+            mIndicatorView.setIndicatorWidth(width, key == LEFT_EDGE_SEEKBAR_KEY);
             return true;
         });
 
         pref.setOnPreferenceChangeStopListener((p, v) -> {
+            mIndicatorView.setIndicatorWidth(0, key == LEFT_EDGE_SEEKBAR_KEY);
             final float scale = mBackGestureInsetScales[(int) v];
-            if (key == GESTURE_BACK_HEIGHT_KEY) {
-                mIndicatorView.setIndicatorWidth(0, false);
-                mIndicatorView.setIndicatorWidth(0, true);
-                Settings.System.putInt(getContext().getContentResolver(), settingsKey, (int) scale);
-            } else {
-                mIndicatorView.setIndicatorWidth(0, key == LEFT_EDGE_SEEKBAR_KEY);
-                Settings.Secure.putFloat(getContext().getContentResolver(), settingsKey, scale);
-            }
+            Settings.Secure.putFloat(getContext().getContentResolver(), settingsKey, scale);
             return true;
         });
-    }
-
-    private void initGestureNavbarLengthPreference() {
-        final ContentResolver resolver = getContext().getContentResolver();
-        mGestureNavbarLengthPreference = getPreferenceScreen().findPreference(GESTURE_NAVBAR_LENGTH_KEY);
-        mGestureNavbarLengthPreference.setContinuousUpdates(true);
-        mGestureNavbarLengthPreference.setProgress(Settings.System.getIntForUser(
-            resolver, Settings.System.GESTURE_NAVBAR_LENGTH_MODE,
-            1, UserHandle.USER_CURRENT));
-        mGestureNavbarLengthPreference.setOnPreferenceChangeListener((p, v) ->
-            Settings.System.putIntForUser(resolver, Settings.System.GESTURE_NAVBAR_LENGTH_MODE,
-                (Integer) v, UserHandle.USER_CURRENT));
-    }
-
-    private void initGestureNavbarHeightPreference() {
-        final LabeledSeekBarPreference pref = getPreferenceScreen().
-            findPreference(GESTURE_NAVBAR_HEIGHT_MODE_KEY);
-        pref.setContinuousUpdates(true);
-        pref.setProgress(Settings.System.getIntForUser(getContext().getContentResolver(),
-            Settings.System.GESTURE_NAVBAR_HEIGHT_MODE, 3, UserHandle.USER_CURRENT));
-        pref.setOnPreferenceChangeListener((p, v) ->
-            Settings.System.putIntForUser(getContext().getContentResolver(),
-                Settings.System.GESTURE_NAVBAR_HEIGHT_MODE, (Integer) v, UserHandle.USER_CURRENT));
     }
 
     private static float[] getFloatArray(TypedArray array) {

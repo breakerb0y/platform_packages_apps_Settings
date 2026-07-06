@@ -51,7 +51,8 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
 
     @Override
     public int getAvailabilityStatus() {
-        return UNSUPPORTED_ON_DEVICE;
+        return SubscriptionUtil.isSimHardwareVisible(mContext) ?
+                AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 
     @Override
@@ -90,6 +91,7 @@ public class PhoneNumberPreferenceController extends BasePreferenceController {
         for (int simSlotNumber = 1; simSlotNumber < mTelephonyManager.getPhoneCount();
                 simSlotNumber++) {
             final Preference multiSimPreference = createNewPreference(screen.getContext());
+            multiSimPreference.setSelectable(true);
             multiSimPreference.setCopyingEnabled(true);
             multiSimPreference.setOrder(phonePreferenceOrder + simSlotNumber);
             multiSimPreference.setKey(KEY_PHONE_NUMBER + simSlotNumber);

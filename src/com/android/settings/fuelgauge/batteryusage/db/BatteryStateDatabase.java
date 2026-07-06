@@ -33,8 +33,7 @@ import androidx.room.RoomDatabase;
             BatteryUsageSlotEntity.class,
             BatteryReattributeEntity.class
         },
-        version = 3,
-        exportSchema = false)
+        version = 3)
 public abstract class BatteryStateDatabase extends RoomDatabase {
     private static final String TAG = "BatteryStateDatabase";
     private static final String DB_FILE_NAME = "battery-usage-db-v11";

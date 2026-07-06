@@ -21,27 +21,6 @@
     android:key="top_level_settings">
 
     <PreferenceCategory
-        android:order="-150"
-        android:key="top_level_account_category"
-        android:layout="@layout/settingslib_preference_category_no_title">
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:order="-140"
-        android:key="top_level_blissify_category"
-        android:layout="@layout/settingslib_preference_category_no_title">
-
-    <com.android.settings.widget.HomepagePreference
-        android:fragment="org.blissroms.blissify.Blissify"
-        android:icon="@drawable/ic_dashboard_blissify"
-        android:key="top_level_blissify"
-        android:order="-50"
-        android:title="@string/blissify_settings_title"
-        android:summary="@string/blissify_settings_summary"
-        settings:controller="org.blissroms.blissify.TopLevelBlissifyPreferenceController"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:order="-130"
         android:key="top_level_connectivity_category"
         android:layout="@layout/settingslib_preference_category_no_title">
@@ -247,8 +226,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:order="-20"
-        android:key="top_level_category_undefined"
+        android:order="-90"
+        android:key="top_level_account_category"
         android:layout="@layout/settingslib_preference_category_no_title">
     </PreferenceCategory>
 

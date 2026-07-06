@@ -27,6 +27,7 @@
         android:summary="@string/summary_placeholder"
         android:icon="@drawable/ic_settings_wireless"
         android:order="-30"
+        settings:allowDividerAbove="true"
         settings:keywords="@string/keywords_internet"
         settings:useAdminDisabledSummary="true"
         settings:userRestriction="no_config_wifi"
@@ -94,12 +95,15 @@
         settings:userRestriction="no_config_vpn"
         settings:useAdminDisabledSummary="true" />
 
-    <Preference
-        android:fragment="com.android.settings.network.PrivateDnsSettings"
+    <com.android.settings.network.PrivateDnsModeDialogPreference
         android:key="private_dns_settings"
         android:title="@string/select_private_dns_configuration_title"
         android:icon="@drawable/ic_settings_private_dns"
-        android:order="20" />
+        android:order="20"
+        android:dialogTitle="@string/select_private_dns_configuration_dialog_title"
+        android:dialogLayout="@layout/private_dns_mode_dialog"
+        android:positiveButtonText="@string/save"
+        android:negativeButtonText="@android:string/cancel" />
 
     <Preference
         android:fragment="com.android.settings.network.AdaptiveConnectivitySettings"

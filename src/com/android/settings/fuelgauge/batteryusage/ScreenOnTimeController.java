@@ -69,7 +69,7 @@ public class ScreenOnTimeController extends BasePreferenceController {
 
     void handleScreenOnTimeUpdated(
             Long screenOnTime, String slotTimestamp, String accessibilitySlotTimestamp) {
-        if (screenOnTime == null || screenOnTime <= 0) {
+        if (screenOnTime == null) {
             mRootPreference.setVisible(false);
             mScreenOnTimeTextPreference.setVisible(false);
             return;

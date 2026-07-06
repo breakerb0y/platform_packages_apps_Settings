@@ -18,8 +18,6 @@ package com.android.settings.spa.preference
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.widget.ImageView
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
@@ -65,18 +63,7 @@ open class ComposePreference @JvmOverloads constructor(
         holder.isDividerAllowedAbove = false
         holder.isDividerAllowedBelow = false
 
-        val iconView = holder.findViewById(android.R.id.icon) as? ImageView
-        iconView?.let {
-            if (icon != null) {
-                it.visibility = View.VISIBLE
-                it.setImageDrawable(icon)
-            } else {
-                it.visibility = View.GONE
-            }
-        }
-
-        val composeView = holder.findViewById(R.id.compose_view) as? ComposeView
-        composeView?.apply {
+        (holder.itemView as ComposeView).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 SettingsTheme {

@@ -58,7 +58,6 @@ import java.util.List;
 public class PrivateDnsPreferenceController extends BasePreferenceController
         implements PreferenceControllerMixin, LifecycleObserver, OnStart, OnStop {
     private static final String KEY_PRIVATE_DNS_SETTINGS = "private_dns_settings";
-    private static final String KEY_ENFORCE_VPN_SETTINGS = "vpn_enforce_dns";
 
     private static final Uri[] SETTINGS_URIS = new Uri[]{
         Settings.Global.getUriFor(PRIVATE_DNS_MODE),
@@ -68,17 +67,12 @@ public class PrivateDnsPreferenceController extends BasePreferenceController
 
     // Only used in Settings, update on additions to ConnectivitySettingsUtils
     private static final int PRIVATE_DNS_MODE_CLOUDFLARE = 4;
-    private static final int PRIVATE_DNS_MODE_ADGUARD = 5;
-    private static final int PRIVATE_DNS_MODE_OPEN_DNS = 6;
-    private static final int PRIVATE_DNS_MODE_CLEANBROWSING = 7;
-    private static final int PRIVATE_DNS_MODE_QUAD9 = 8;
 
     private final Handler mHandler;
     private final ContentObserver mSettingsObserver;
     private final ConnectivityManager mConnectivityManager;
     private LinkProperties mLatestLinkProperties;
     private Preference mPreference;
-    private Preference mEnforcePreference;
 
     public PrivateDnsPreferenceController(Context context) {
         super(context, KEY_PRIVATE_DNS_SETTINGS);
@@ -107,7 +101,6 @@ public class PrivateDnsPreferenceController extends BasePreferenceController
         super.displayPreference(screen);
 
         mPreference = screen.findPreference(getPreferenceKey());
-        mEnforcePreference = screen.findPreference(KEY_ENFORCE_VPN_SETTINGS);
     }
 
     @Override
@@ -140,10 +133,6 @@ public class PrivateDnsPreferenceController extends BasePreferenceController
             case PRIVATE_DNS_MODE_OFF:
                 return res.getString(com.android.settingslib.R.string.private_dns_mode_off);
             case PRIVATE_DNS_MODE_CLOUDFLARE:
-            case PRIVATE_DNS_MODE_ADGUARD:
-            case PRIVATE_DNS_MODE_OPEN_DNS:
-            case PRIVATE_DNS_MODE_CLEANBROWSING:
-            case PRIVATE_DNS_MODE_QUAD9:
             case PRIVATE_DNS_MODE_OPPORTUNISTIC:
                 return dnsesResolved ? res.getString(R.string.private_dns_mode_on)
                         : res.getString(
@@ -157,24 +146,8 @@ public class PrivateDnsPreferenceController extends BasePreferenceController
                         ConnectivitySettingsManager.getPrivateDnsHostname(mContext);
                 final String cloudflareHostname =
                         res.getString(R.string.private_dns_hostname_cloudflare);
-                final String adguardHostname =
-                        res.getString(R.string.private_dns_hostname_adguard);
-                final String opendnsHostname =
-                        res.getString(R.string.private_dns_hostname_open_dns);
-                final String cleanbrowsingHostname =
-                        res.getString(R.string.private_dns_hostname_cleanbrowsing);
-                final String quad9Hostname =
-                        res.getString(R.string.private_dns_hostname_quad9);
                 if (privateDnsHostname.equals(cloudflareHostname)) {
                     return res.getString(R.string.private_dns_mode_cloudflare);
-                } else if (privateDnsHostname.equals(adguardHostname)) {
-                    return res.getString(R.string.private_dns_mode_adguard);
-                } else if (privateDnsHostname.equals(opendnsHostname)) {
-                    return res.getString(R.string.private_dns_mode_open_dns);
-                } else if (privateDnsHostname.equals(cleanbrowsingHostname)) {
-                    return res.getString(R.string.private_dns_mode_cleanbrowsing);
-                } else if (privateDnsHostname.equals(quad9Hostname)) {
-                    return res.getString(R.string.private_dns_mode_quad9);
                 }
                 return PrivateDnsModeDialogPreference.getHostnameFromSettings(cr);
         }
@@ -184,11 +157,7 @@ public class PrivateDnsPreferenceController extends BasePreferenceController
     @Override
     public void updateState(Preference preference) {
         super.updateState(preference);
-        final boolean isManaged = isManagedByAdmin();
-        preference.setEnabled(!isManaged);
-        if (mEnforcePreference == null) return;
-        final int mode = ConnectivitySettingsManager.getPrivateDnsMode(mContext);
-        mEnforcePreference.setEnabled(!isManaged && mode != PRIVATE_DNS_MODE_OFF);
+        preference.setEnabled(!isManagedByAdmin());
     }
 
     private boolean isManagedByAdmin() {

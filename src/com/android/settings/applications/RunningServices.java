@@ -26,9 +26,11 @@ import android.view.ViewGroup;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
+import com.android.settings.development.DeveloperOptionAwareMixin;
 import com.android.settings.widget.LoadingViewController;
 
-public class RunningServices extends SettingsPreferenceFragment {
+public class RunningServices extends SettingsPreferenceFragment implements
+        DeveloperOptionAwareMixin {
 
     private static final int SHOW_RUNNING_SERVICES = 1;
     private static final int SHOW_BACKGROUND_PROCESSES = 2;
@@ -110,12 +112,6 @@ public class RunningServices extends SettingsPreferenceFragment {
         boolean showingBackground = mRunningProcessesView.mAdapter.getShowBackground();
         mOptionsMenu.findItem(SHOW_RUNNING_SERVICES).setVisible(showingBackground);
         mOptionsMenu.findItem(SHOW_BACKGROUND_PROCESSES).setVisible(!showingBackground);
-
-        if (!showingBackground) {
-            getActivity().setTitle(com.android.settingslib.R.string.runningservices_settings_title);
-        } else {
-            getActivity().setTitle(R.string.background_processes_settings_title);
-        }
     }
 
     @Override

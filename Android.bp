@@ -42,9 +42,6 @@ java_library {
     libs: [
         "app-compat-annotations",
     ],
-    optimize: {
-        proguard_flags_files: ["proguard-core.flags"],
-    },
 }
 
 android_library {
@@ -63,7 +60,6 @@ android_library {
         "src/com/android/settings/biometrics/fingerprint2/lib/**/*.kt",
     ],
     use_resource_processor: true,
-
     resource_dirs: [
         "res",
         "res-export", // for external usage
@@ -116,19 +112,11 @@ android_library {
         "setupdesign-lottie-loading-layout",
         "device_policy_aconfig_flags_lib",
         "keyboard_flags_lib",
-        "glide",
 
         // Lineage dependencies
         "org.lineageos.platform.internal",
         "LineagePreferenceLib",
         "vendor.lineage.fastcharge-V1.0-java",
-        "androidx.fragment_fragment",
-        "androidx.fragment_fragment-ktx",
-        "androidx.preference_preference-ktx",
-        "kotlin-stdlib",
-        "kotlinx_coroutines_android",
-        "kotlinx_coroutines",
-        "SystemUISharedLib",
     ],
 
     plugins: [
@@ -198,9 +186,4 @@ android_library_import {
 filegroup {
     name: "Settings_proguard_flags",
     srcs: ["proguard.flags"],
-}
-
-android_library_import {
-    name: "glide",
-    aars: ["libs/glide-4.16.0.aar"],
 }

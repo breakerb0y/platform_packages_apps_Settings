@@ -42,7 +42,6 @@
     <!-- Media output switcher -->
     <Preference
         android:key="media_output"
-        android:icon="@drawable/ic_media_output"
         android:title="@string/media_output_title"
         android:dialogTitle="@string/media_output_title"
         android:order="-175"
@@ -95,15 +94,6 @@
         settings:userRestriction="no_adjust_volume"
         settings:controller="com.android.settings.notification.AlarmVolumePreferenceController"/>
 
-    <!-- Volume steps -->
-    <Preference
-        android:key="volume_steps"
-        android:title="@string/volume_steps_title"
-        android:summary="@string/volume_steps_summary"
-        android:fragment="com.android.settings.sound.VolumeStepsSettings"
-        android:order="-135"
-        settings:controller="com.android.settings.sound.VolumeStepsPreferenceController"/>
-
     <!-- TODO(b/174964721): make this a PrimarySwitchPreference -->
     <!-- Interruptions -->
     <com.android.settingslib.RestrictedPreference
@@ -125,16 +115,6 @@
         android:order="-120"
         settings:keywords="@string/sound_settings"/>
 
-    <!-- Phone ringtone for Slot2 -->
-    <com.android.settings.DefaultRingtonePreference
-        android:key="ringtone2"
-        android:title="@string/ringtone_title"
-        android:dialogTitle="@string/ringtone_title"
-        android:summary="@string/summary_placeholder"
-        android:ringtoneType="ringtone"
-        settings:allowDividerAbove="false"
-        android:order="-119"/>
-
     <!-- Live Caption -110 and Now Playing -105-->
 
     <!-- Spatial audio -->
@@ -144,14 +124,6 @@
         android:fragment="com.android.settings.notification.SpatialAudioSettings"
         android:order="-107"
         settings:controller="com.android.settings.notification.SpatialAudioParentPreferenceController"/>
-
-    <!-- Adaptive Playback -->
-    <Preference
-        android:key="sound_adaptive_playback_summary"
-        android:title="@string/adaptive_playback_screen_title"
-        android:fragment="com.android.settings.sound.AdaptivePlaybackSoundSettings"
-        android:order="-103"
-        settings:controller="com.android.settings.sound.AdaptivePlaybackParentPreferenceController" />
 
     <Preference
         android:key="media_controls_summary"
@@ -169,22 +141,6 @@
         android:order="-90"
         settings:controller="com.android.settings.accessibility.VibrationPreferenceController"
         settings:keywords="@string/keywords_vibration"/>
-
-    <ListPreference
-        android:key="vibration_pattern"
-        android:title="@string/vibration_pattern_title"
-        android:order="-85"
-        android:entries="@array/vibration_pattern_entries"
-        android:entryValues="@array/vibration_pattern_values"/>
-
-    <!-- Custom ringtone vibration pattern preference -->
-    <Preference
-        android:key="custom_vibration_pattern"
-        android:title="@string/custom_vibration_pattern_title"
-        android:summary="@string/custom_vibration_pattern_summary"
-        android:order="-83"
-        android:fragment="com.android.settings.sound.CustomVibrationPreferenceFragment"
-        android:visibility="gone"/>
 
     <com.android.settingslib.PrimarySwitchPreference
         android:key="gesture_prevent_ringing_sound"
@@ -211,13 +167,6 @@
         android:persistent="false"
         android:ringtoneType="alarm"
         android:order="-60"/>
-
-    <org.blissroms.blissify.preferences.SystemSettingSwitchPreference
-        android:key="show_app_volume"
-        android:title="@string/app_volume_title"
-        android:summary="@string/app_volume_summary"
-        android:defaultValue="false"
-        android:order="-5"/>
 
     <!-- Dial pad tones -->
     <SwitchPreferenceCompat
@@ -262,7 +211,7 @@
         android:order="-27"/>
 
     <!-- Dock speaker plays -->
-    <ListPreference
+    <DropDownPreference
         android:key="dock_audio_media"
         android:title="@string/dock_audio_media_title"
         android:summary="%s"
@@ -275,7 +224,7 @@
         android:order="-15"/>
 
     <!-- Emergency tone -->
-    <ListPreference
+    <DropDownPreference
         android:key="emergency_tone"
         android:title="@string/emergency_tone_title"
         android:summary="%s"
@@ -287,5 +236,4 @@
         android:fragment="com.android.settings.notification.SoundWorkSettings"
         android:order="100"
         settings:controller="com.android.settings.notification.WorkSoundsPreferenceController"/>
-
 </PreferenceScreen>

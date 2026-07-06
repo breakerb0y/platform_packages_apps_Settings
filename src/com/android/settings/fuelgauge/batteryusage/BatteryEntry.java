@@ -68,9 +68,6 @@ public class BatteryEntry {
         }
     }
 
-    public static final int MSG_UPDATE_NAME_ICON = 1;
-    public static final int MSG_REPORT_FULLY_DRAWN = 2;
-
     private static final String TAG = "BatteryEntry";
     private static final String PACKAGE_SYSTEM = "android";
 
@@ -619,10 +616,14 @@ public class BatteryEntry {
                 iconId = R.drawable.ic_settings_aod;
                 break;
             default:
-                String fieldName = DebugUtils.constantToString(
-                        BatteryConsumer.class, "POWER_COMPONENT_", powerComponentId);
-                Log.w(TAG, "unknown attribute:" + fieldName);
-                name = context.getResources().getString(R.string.header_category_system) + " (" + fieldName + ")";
+                Log.w(
+                        TAG,
+                        "unknown attribute:"
+                                + DebugUtils.constantToString(
+                                        BatteryConsumer.class,
+                                        "POWER_COMPONENT_",
+                                        powerComponentId));
+                name = null;
                 iconId = R.drawable.ic_power_system;
                 break;
         }

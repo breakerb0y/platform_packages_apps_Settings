@@ -186,7 +186,7 @@ public class CardContentProvider extends ContentProvider {
 
     @VisibleForTesting
     void maybeEnableStrictMode() {
-        if (Build.IS_ENG && ThreadUtils.isMainThread()) {
+        if (Build.IS_DEBUGGABLE && ThreadUtils.isMainThread()) {
             enableStrictMode();
         }
     }

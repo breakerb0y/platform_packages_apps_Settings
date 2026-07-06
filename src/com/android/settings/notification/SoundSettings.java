@@ -34,7 +34,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.RingtonePreference;
@@ -53,8 +52,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.blissroms.blissify.utils.DeviceUtils;
-
 @SearchIndexable
 public class SoundSettings extends DashboardFragment implements OnActivityResultListener {
     private static final String TAG = "SoundSettings";
@@ -65,7 +62,6 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
 
     private static final String EXTRA_OPEN_PHONE_RINGTONE_PICKER =
             "EXTRA_OPEN_PHONE_RINGTONE_PICKER";
-    private static final String KEY_NOW_PLAYING = "dashboard_tile_pref_com.google.intelligence.sense.ambientmusic.AmbientMusicSettingsActivity";
 
     @VisibleForTesting
     static final int STOP_SAMPLE = 1;
@@ -124,21 +120,6 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
                     ((VolumeSeekBarPreference) preference).setCallback(mVolumeCallback);
                 }
             }
-        }
-        if (!DeviceUtils.isCurrentlySupportedPixel()) {
-            updateAmbientMusicPref();
-        }
-    }
-
-    private void updateAmbientMusicPref() {
-        final PreferenceScreen screen = getPreferenceScreen();
-        if (getContext().getResources().getBoolean(R.bool.config_show_now_playing) || screen == null) {
-            return;
-        }
-
-        final Preference preference = screen.findPreference(KEY_NOW_PLAYING);
-        if (preference != null) {
-            screen.removePreference(preference);
         }
     }
 
@@ -285,10 +266,8 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
 
         // === Phone & notification ringtone ===
         controllers.add(new PhoneRingtonePreferenceController(context));
-        controllers.add(new PhoneRingtone2PreferenceController(context));
         controllers.add(new AlarmRingtonePreferenceController(context));
         controllers.add(new NotificationRingtonePreferenceController(context));
-        controllers.add(new VibrationPatternPreferenceController(context));
 
         // === Other Sound Settings ===
         final DialPadTonePreferenceController dialPadTonePreferenceController =
@@ -338,17 +317,6 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
 
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.sound_settings) {
-
-                @Override
-                public List<String> getNonIndexableKeys(Context context) {
-                    List<String> keys = super.getNonIndexableKeys(context);
-
-                    if (!context.getResources().getBoolean(R.bool.config_show_now_playing)) {
-                        keys.add(KEY_NOW_PLAYING);
-                    }
-
-                    return keys;
-                }
 
                 @Override
                 public List<AbstractPreferenceController> createPreferenceControllers(

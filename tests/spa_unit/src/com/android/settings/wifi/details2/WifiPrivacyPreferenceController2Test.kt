@@ -45,11 +45,11 @@ class WifiPrivacyPreferenceController2Test {
     })
 
     private var preference = ListPreference(context).apply {
-        setEntries(R.array.wifi_privacy_entries_ext)
-        setEntryValues(R.array.wifi_privacy_values_ext)
+        setEntries(R.array.wifi_privacy_entries)
+        setEntryValues(R.array.wifi_privacy_values)
     }
 
-    private var preferenceStrings = context.resources.getStringArray(R.array.wifi_privacy_entries_ext)
+    private var preferenceStrings = context.resources.getStringArray(R.array.wifi_privacy_entries)
 
     @Test
     fun updateState_wifiPrivacy_setCorrectValue() {

@@ -699,8 +699,8 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
             @Nullable BluetoothA2dpConfigStore bluetoothA2dpConfigStore) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
         controllers.add(new MemoryUsagePreferenceController(context));
-        //controllers.add(new BugReportPreferenceController(context));
-        //controllers.add(new BugReportHandlerPreferenceController(context));
+        controllers.add(new BugReportPreferenceController(context));
+        controllers.add(new BugReportHandlerPreferenceController(context));
         controllers.add(new SystemServerHeapDumpPreferenceController(context));
         controllers.add(new DevelopmentMemtagPagePreferenceController(context));
         controllers.add(new LocalBackupPasswordPreferenceController(context));
@@ -717,7 +717,7 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
         controllers.add(new PictureColorModePreferenceController(context, lifecycle));
         controllers.add(new WebViewAppPreferenceController(context));
         controllers.add(new CoolColorTemperaturePreferenceController(context));
-     // controllers.add(new DisableAutomaticUpdatesPreferenceController(context));
+        controllers.add(new DisableAutomaticUpdatesPreferenceController(context));
         controllers.add(new SelectDSUPreferenceController(context));
         controllers.add(new AdbPreferenceController(context, fragment));
         controllers.add(new ClearAdbKeysPreferenceController(context, fragment));
@@ -726,7 +726,7 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
         controllers.add(new AdbAuthorizationTimeoutPreferenceController(context));
         controllers.add(new LocalTerminalPreferenceController(context));
         controllers.add(new LinuxTerminalPreferenceController(context));
-        //controllers.add(new BugReportInPowerPreferenceController(context));
+        controllers.add(new BugReportInPowerPreferenceController(context));
         controllers.add(new AutomaticSystemServerHeapDumpPreferenceController(context));
         controllers.add(new MockLocationAppPreferenceController(context, fragment));
         controllers.add(new MockModemPreferenceController(context));
@@ -785,6 +785,7 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
         controllers.add(new DebugNonRectClipOperationsPreferenceController(context));
         controllers.add(new GameDefaultFrameRatePreferenceController(context));
         controllers.add(new ForceDarkPreferenceController(context));
+        controllers.add(new EnableBlursPreferenceController(context));
         controllers.add(new ForceMSAAPreferenceController(context));
         controllers.add(new HardwareOverlaysPreferenceController(context));
         controllers.add(new SimulateColorSpacePreferenceController(context));

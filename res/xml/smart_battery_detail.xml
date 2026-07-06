@@ -30,7 +30,8 @@
         android:key="smart_battery"
         android:title="@string/smart_battery_title"
         android:summary="@string/smart_battery_summary"
-        settings:controller="com.android.settings.fuelgauge.SmartBatteryPreferenceController"/>
+        settings:controller="com.android.settings.fuelgauge.SmartBatteryPreferenceController"
+        settings:allowDividerAbove="true"/>
 
     <SwitchPreferenceCompat
         android:key="auto_restriction"

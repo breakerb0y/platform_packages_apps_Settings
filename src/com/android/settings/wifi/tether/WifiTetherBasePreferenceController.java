@@ -47,7 +47,7 @@ public abstract class WifiTetherBasePreferenceController extends AbstractPrefere
         mListener = listener;
         mWifiManager = context.getSystemService(WifiManager.class);
         mTm = context.getSystemService(TetheringManager.class);
-        mWifiRegexs = mTm != null ? mTm.getTetherableWifiRegexs() : null;
+        mWifiRegexs = mTm.getTetherableWifiRegexs();
     }
 
     @Override

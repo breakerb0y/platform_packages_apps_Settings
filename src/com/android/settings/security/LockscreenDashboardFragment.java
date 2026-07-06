@@ -32,14 +32,11 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.display.AmbientDisplayAlwaysOnPreferenceController;
 import com.android.settings.display.AmbientDisplayNotificationsPreferenceController;
-import com.android.settings.display.AODSchedulePreferenceController;
 import com.android.settings.gestures.DoubleTapScreenPreferenceController;
 import com.android.settings.gestures.PickupGesturePreferenceController;
 import com.android.settings.notification.LockScreenNotificationPreferenceController;
@@ -52,14 +49,13 @@ import com.android.settingslib.search.SearchIndexable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.blissroms.blissify.utils.DeviceUtils;
-
 /**
  * Settings screen for lock screen preference
  */
 @SearchIndexable
 public class LockscreenDashboardFragment extends DashboardFragment
         implements OwnerInfoPreferenceController.OwnerInfoCallback {
+
     private static final String TAG = "LockscreenDashboardFragment";
 
     @VisibleForTesting
@@ -73,7 +69,7 @@ public class LockscreenDashboardFragment extends DashboardFragment
     @VisibleForTesting
     static final String KEY_ADD_USER_FROM_LOCK_SCREEN =
             "security_lockscreen_add_users_when_locked";
-    private static final String KEY_NOW_PLAYING = "dashboard_tile_pref_com.google.intelligence.sense.ambientmusic.AmbientMusicNotificationsSettingsActivity";
+
 
     private AmbientDisplayConfiguration mConfig;
     private OwnerInfoPreferenceController mOwnerInfoPreferenceController;
@@ -98,20 +94,6 @@ public class LockscreenDashboardFragment extends DashboardFragment
                 R.string.locked_work_profile_notification_title);
         replaceEnterpriseStringTitle("security_setting_lock_screen_notif_work_header",
                 WORK_PROFILE_NOTIFICATIONS_SECTION_HEADER, R.string.profile_section_header);
-        if (!DeviceUtils.isCurrentlySupportedPixel()) {
-            updateAmbientMusicPref();
-        }
-    }
-
-    private void updateAmbientMusicPref() {
-        final PreferenceScreen screen = getPreferenceScreen();
-        if (getContext().getResources().getBoolean(R.bool.config_show_now_playing) || screen == null) {
-            return;
-        }
-        final Preference preference = screen.findPreference(KEY_NOW_PLAYING);
-        if (preference != null) {
-            screen.removePreference(preference);
-        }
     }
 
     @Override
@@ -133,7 +115,6 @@ public class LockscreenDashboardFragment extends DashboardFragment
         use(AmbientDisplayNotificationsPreferenceController.class).setConfig(getConfig(context));
         use(DoubleTapScreenPreferenceController.class).setConfig(getConfig(context));
         use(PickupGesturePreferenceController.class).setConfig(getConfig(context));
-        use(AODSchedulePreferenceController.class).setConfig(getConfig(context));
 
         mControlsContentObserver = new ContentObserver(
                 new Handler(Looper.getMainLooper())) {
@@ -210,9 +191,6 @@ public class LockscreenDashboardFragment extends DashboardFragment
                 public List<String> getNonIndexableKeys(Context context) {
                     final List<String> niks = super.getNonIndexableKeys(context);
                     niks.add(KEY_ADD_USER_FROM_LOCK_SCREEN);
-                    if (!context.getResources().getBoolean(R.bool.config_show_now_playing)) {
-                        niks.add(KEY_NOW_PLAYING);
-                    }
                     return niks;
                 }
 

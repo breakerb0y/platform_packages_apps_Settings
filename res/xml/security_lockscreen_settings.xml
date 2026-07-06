@@ -36,7 +36,7 @@
             android:fragment="com.android.settings.notification.LockScreenNotificationsPreferencePageFragment"
             settings:controller="com.android.settings.notification.LockScreenNotificationsPreferencePageController" />
 
-        <com.android.settingslib.RestrictedSwitchPreference
+        <SwitchPreferenceCompat
             android:key="security_display_lockscreen_bypass"
             android:title="@string/lockscreen_bypass_title"
             android:summary="@string/lockscreen_bypass_summary"
@@ -106,19 +106,7 @@
             settings:userRestriction="no_ambient_display" />
 
         <Preference
-            android:key="always_on_display_schedule"
-            android:title="@string/always_on_display_schedule_title"
-            android:fragment="com.android.settings.display.AODSchedule"
-            settings:controller="com.android.settings.display.AODSchedulePreferenceController" />
-
-        <org.blissroms.blissify.preferences.SecureSettingSwitchPreference
-            android:key="pulse_on_new_tracks"
-            android:title="@string/pulse_on_new_tracks_title"
-            android:summary="@string/pulse_on_new_tracks_summary"
-            android:defaultValue="false" />
-
-        <com.android.settingslib.PrimarySwitchPreference
-            android:key="gesture_tap"
+            android:key="ambient_display_tap"
             android:title="@string/ambient_display_tap_screen_title"
             android:fragment="com.android.settings.gestures.TapScreenGestureSettings"
             settings:searchable="false"
@@ -131,7 +119,7 @@
             settings:searchable="false"
             settings:controller="com.android.settings.gestures.DoubleTapScreenPreferenceController" />
 
-        <com.android.settingslib.PrimarySwitchPreference
+        <Preference
             android:key="ambient_display_pick_up"
             android:title="@string/ambient_display_pickup_title"
             android:fragment="com.android.settings.gestures.PickupGestureSettings"

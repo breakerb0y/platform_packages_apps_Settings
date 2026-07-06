@@ -34,7 +34,6 @@ import com.android.settings.fuelgauge.batteryusage.BatteryDiffData;
 import com.android.settings.fuelgauge.batteryusage.BatteryEvent;
 import com.android.settings.fuelgauge.batteryusage.DetectRequestSourceType;
 import com.android.settings.fuelgauge.batteryusage.PowerAnomalyEventList;
-import com.android.settings.fuelgauge.batteryusage.BatteryHistEntry;
 import com.android.settingslib.fuelgauge.Estimate;
 
 import java.util.ArrayList;
@@ -45,8 +44,6 @@ import java.util.Set;
 /** Implementation of {@code PowerUsageFeatureProvider} */
 public class PowerUsageFeatureProviderImpl implements PowerUsageFeatureProvider {
 
-    private static final String ADDITIONAL_BATTERY_INFO_ACTION = "com.google.android.apps.turbo.SHOW_ADDITIONAL_BATTERY_INFO";
-    private static final String ADDITIONAL_BATTERY_INFO_PACKAGE = "com.google.android.apps.turbo";
     private static final String PACKAGE_CALENDAR_PROVIDER = "com.android.providers.calendar";
     private static final String PACKAGE_MEDIA_PROVIDER = "com.android.providers.media";
     private static final String[] PACKAGES_SYSTEM = {
@@ -128,8 +125,7 @@ public class PowerUsageFeatureProviderImpl implements PowerUsageFeatureProvider 
 
     @Override
     public Intent getAdditionalBatteryInfoIntent() {
-        Intent intent = new Intent(ADDITIONAL_BATTERY_INFO_ACTION);
-        return intent.setPackage(ADDITIONAL_BATTERY_INFO_PACKAGE);
+        return null;
     }
 
     @Override
@@ -160,16 +156,6 @@ public class PowerUsageFeatureProviderImpl implements PowerUsageFeatureProvider 
     @Override
     public String getOldEstimateDebugString(String timeRemaining) {
         return null;
-    }
-
-    @Override
-    public String getAdvancedUsageScreenInfoString() {
-        return null;
-    }
-
-    @Override
-    public boolean getEarlyWarningSignal(Context context, String id) {
-        return false;
     }
 
     @Override
@@ -224,12 +210,6 @@ public class PowerUsageFeatureProviderImpl implements PowerUsageFeatureProvider 
     public Set<Integer> getOthersSystemComponentSet() {
         return new ArraySet<>();
     }
-
-    @Override
-    public Map<Long, Map<String, BatteryHistEntry>> getBatteryHistory(Context context) {
-        return null;
-    }
-
 
     @Override
     public Set<String> getOthersCustomComponentNameSet() {

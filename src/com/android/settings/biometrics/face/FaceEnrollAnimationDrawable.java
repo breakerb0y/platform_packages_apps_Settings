@@ -28,7 +28,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
-import com.android.settingslib.Utils;
 import com.android.settings.biometrics.BiometricEnrollSidecar;
 
 /**
@@ -67,7 +66,7 @@ public class FaceEnrollAnimationDrawable extends Drawable
         mListener = listener;
 
         mSquarePaint = new Paint();
-        mSquarePaint.setColor(Utils.getColorAttrDefaultColor(context, android.R.attr.colorBackground));
+        mSquarePaint.setColor(Color.WHITE);
         mSquarePaint.setAntiAlias(true);
 
         mCircleCutoutPaint = new Paint();

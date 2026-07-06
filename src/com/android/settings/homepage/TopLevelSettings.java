@@ -52,7 +52,6 @@ import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.support.SupportPreferenceController;
 import com.android.settings.widget.HomepagePreference;
-import com.android.settings.widget.HomepagePreferenceLayoutHelper;
 import com.android.settings.widget.HomepagePreferenceLayoutHelper.HomepagePreferenceLayout;
 import com.android.settingslib.core.instrumentation.Instrumentable;
 import com.android.settingslib.drawer.Tile;
@@ -286,11 +285,10 @@ public class TopLevelSettings extends DashboardFragment implements SplitLayoutLi
             @Override
             public void doForEach(Preference preference) {
                 if (preference instanceof HomepagePreferenceLayout) {
-                    HomepagePreferenceLayoutHelper helper = ((HomepagePreferenceLayout) preference).getHelper();
-                    if (helper != null) {
-                        helper.setIconPaddingStart(mIconPaddingStart);
-                        helper.setTextPaddingStart(mTextPaddingStart);
-                    }
+                    ((HomepagePreferenceLayout) preference).getHelper()
+                            .setIconPaddingStart(mIconPaddingStart);
+                    ((HomepagePreferenceLayout) preference).getHelper()
+                            .setTextPaddingStart(mTextPaddingStart);
                 }
             }
         });

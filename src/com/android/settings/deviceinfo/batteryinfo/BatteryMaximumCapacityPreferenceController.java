@@ -35,8 +35,7 @@ public class BatteryMaximumCapacityPreferenceController extends BasePreferenceCo
 
     @Override
     public int getAvailabilityStatus() {
-        boolean isFeatureEnabled = mContext.getResources().getBoolean(R.bool.config_show_battery_maximum_capacity);
-        return isFeatureEnabled ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+        return AVAILABLE;
     }
 
     @Override

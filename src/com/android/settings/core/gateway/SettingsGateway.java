@@ -46,7 +46,6 @@ import com.android.settings.applications.AppDashboardFragment;
 import com.android.settings.applications.AppStorageSettings;
 import com.android.settings.applications.ProcessStatsSummary;
 import com.android.settings.applications.ProcessStatsUi;
-import com.android.settings.applications.RunningServices;
 import com.android.settings.applications.UsageAccessDetails;
 import com.android.settings.applications.appcompat.UserAspectRatioDetails;
 import com.android.settings.applications.appinfo.AlarmsAndRemindersDetails;
@@ -125,7 +124,6 @@ import com.android.settings.gestures.DoubleTapPowerSettings;
 import com.android.settings.gestures.DoubleTapScreenSettings;
 import com.android.settings.gestures.DoubleTwistGestureSettings;
 import com.android.settings.gestures.GestureNavigationSettingsFragment;
-import com.android.settings.gestures.LegacyNavigationSettingsFragment;
 import com.android.settings.gestures.OneHandedSettings;
 import com.android.settings.gestures.PickupGestureSettings;
 import com.android.settings.gestures.PowerMenuSettings;
@@ -149,7 +147,6 @@ import com.android.settings.location.WifiScanningFragment;
 import com.android.settings.network.MobileNetworkListFragment;
 import com.android.settings.network.NetworkDashboardFragment;
 import com.android.settings.network.NetworkProviderSettings;
-import com.android.settings.network.PrivateDnsSettings;
 import com.android.settings.network.apn.ApnEditor;
 import com.android.settings.network.apn.ApnSettings;
 import com.android.settings.network.telephony.CellularSecuritySettingsFragment;
@@ -195,7 +192,6 @@ import com.android.settings.security.SecurityAdvancedSettings;
 import com.android.settings.security.SecuritySettings;
 import com.android.settings.shortcut.CreateShortcut;
 import com.android.settings.sound.MediaControlsSettings;
-import com.android.settings.sound.VolumeStepsSettings;
 import com.android.settings.support.SupportDashboardActivity;
 import com.android.settings.system.ResetDashboardFragment;
 import com.android.settings.system.SystemDashboardFragment;
@@ -383,7 +379,6 @@ public class SettingsGateway {
             DarkModeSettingsFragment.class.getName(),
             BugReportHandlerPicker.class.getName(),
             GestureNavigationSettingsFragment.class.getName(),
-            LegacyNavigationSettingsFragment.class.getName(),
             ButtonNavigationSettingsFragment.class.getName(),
             InteractAcrossProfilesSettings.class.getName(),
             InteractAcrossProfilesDetails.class.getName(),
@@ -414,11 +409,7 @@ public class SettingsGateway {
             HearingDevicePairingFragment.class.getName(),
             ZenModesListFragment.class.getName(),
             ZenModeFragment.class.getName(),
-            ContactsStorageSettings.class.getName(),
-            RunningServices.class.getName(),
-            VolumeStepsSettings.class.getName(),
-            SmartPixels.class.getName(),
-            PrivateDnsSettings.class.getName(),
+            ContactsStorageSettings.class.getName()
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
@@ -465,8 +456,5 @@ public class SettingsGateway {
             UserBackupSettingsActivity.class.getName(),
             Settings.MemtagPageActivity.class.getName(),
             Settings.NavigationModeSettingsActivity.class.getName(),
-            Settings.DevRunningServicesActivity.class.getName(),
-            Settings.SmartPixelsActivity.class.getName(),
-            Settings.PrivateDnsSettingsActivity.class.getName(),
     };
 }
