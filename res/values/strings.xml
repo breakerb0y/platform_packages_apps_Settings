@@ -13328,7 +13328,7 @@
     <!-- The title of the screen saver setup page [CHAR LIMIT=none] -->
     <string name="dream_setup_title">Choose your screen saver</string>
     <!-- The description of the screen saver setup page [CHAR LIMIT=none] -->
-    <string name="dream_setup_description">Choose what you’ll see on your screen when your tablet is docked. Your device may use more energy when a screen saver is used.</string>
+    <string name="dream_setup_description">Choose what you’ll see on your screen when your device is docked. Your device may use more energy when a screen saver is used.</string>
 
     <!-- Button to customize the screensaver [CHAR LIMIT=20] -->
     <string name="customize_button_title">Customize</string>
