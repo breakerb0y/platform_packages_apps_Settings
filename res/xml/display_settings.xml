@@ -265,4 +265,27 @@
             android:title="@string/display_vr_pref_title"
             android:fragment="com.android.settings.display.VrDisplayPreferencePicker"/>
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="secondary_display_category"
+        android:title="Secondary Display">
+
+        <SwitchPreferenceCompat
+            android:key="sec_display_enable"
+            android:title="Secondary Display"
+            android:summary="Secondary Display On - Off"
+            android:defaultValue="true"
+            settings:controller="com.android.settings.display.SecondDisplayEnableController" />
+
+        <ListPreference
+            android:key="sec_display_mode"
+            android:title="Mirrored/Extended"
+            android:summary="%s"
+            android:entries="@array/sec_display_mode_entries"
+            android:entryValues="@array/sec_display_mode_values"
+            android:defaultValue="2"
+            android:dependency="sec_display_enable"
+            settings:controller="com.android.settings.display.SecondDisplayModeController" />
+
+    </PreferenceCategory>
 </PreferenceScreen>
